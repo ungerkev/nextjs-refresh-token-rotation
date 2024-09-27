@@ -7,7 +7,7 @@ interface Response {
   success: boolean;
 }
 
-export interface AuthApi {
+interface AuthApi {
   login: (email: string, password: string) => Promise<XiorResponse<Response>>;
   logout: (headers?: Headers) => Promise<XiorResponse<Response>>;
   verifyAccessToken: (headers?: Headers) => Promise<XiorResponse<Response>>;

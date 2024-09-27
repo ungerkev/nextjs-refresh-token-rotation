@@ -57,16 +57,15 @@ xiorClient.interceptors.response.use(
           const { refreshAccessToken } = authApi();
           await refreshAccessToken();
           isRefreshing = false;
-          processQueue(null); // Retry all queued requests
+          processQueue(null);
           return xiorClient.request(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
-          processQueue(refreshError as XiorError); // Reject all queued requests
+          processQueue(refreshError as XiorError);
           return Promise.reject(refreshError);
         }
       }
 
-      // Queue the failed request if a refresh is already in progress
       return new Promise((resolve, reject) => {
         if (originalRequest) {
           failedQueue.push({ resolve, reject, config: originalRequest });
@@ -77,7 +76,6 @@ xiorClient.interceptors.response.use(
     }
 
     if (isClientSide() && error.response?.status === 401) {
-      // Reload window to trigger middlware and logout user
       window.location.reload();
     }
 
